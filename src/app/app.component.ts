@@ -1,14 +1,19 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from "./shared/services/auth.service";
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {
-  title = 'library1';
+export class AppComponent implements OnInit {
+
+  constructor(private auth: AuthService) {
+  }
+
+  ngOnInit() {
+    const potentialToken = localStorage.getItem('auth-token');
+    if (potentialToken !== null) {
+      this.auth.setToken(potentialToken);
+    }
+  }
 }
